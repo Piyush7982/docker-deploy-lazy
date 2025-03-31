@@ -17,6 +17,17 @@ RUN apt-get update && apt-get install -y \
     apt-transport-https \
     iputils-ping \
     software-properties-common \
+    net-tools \
+    iproute2 \
+    traceroute \
+    dnsutils \
+    iperf3 \
+    mtr \
+    socat \
+    openssh-client \
+    tcpdump \
+    telnet \
+    ufw \
     && rm -rf /var/lib/apt/lists/*
 
 RUN npm install -g ganache-cli
@@ -27,4 +38,9 @@ RUN python3 -m venv /app/venv
 
 RUN /app/venv/bin/pip install Flask web3 hexbytes py-solc-x
 
+RUN ufw --force enable && ufw allow 22/tcp && ufw allow icmp
+
+RUN echo 'net.ipv4.icmp_echo_ignore_all=0' >> /etc/sysctl.conf && sysctl -p
+
 CMD ["/bin/bash"]
+
