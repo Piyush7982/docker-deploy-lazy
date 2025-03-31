@@ -38,9 +38,7 @@ RUN python3 -m venv /app/venv
 
 RUN /app/venv/bin/pip install Flask web3 hexbytes py-solc-x
 
-RUN ufw --force enable && ufw allow 22/tcp && ufw allow icmp
 
-RUN echo 'net.ipv4.icmp_echo_ignore_all=0' >> /etc/sysctl.conf && sysctl -p
 
 CMD ["/bin/bash"]
 
