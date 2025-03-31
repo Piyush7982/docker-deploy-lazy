@@ -1,12 +1,6 @@
-FROM ubuntu:20.04
-
+FROM ubuntu:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
-
-
-RUN echo 'APT::Install-Suggests "0";' >> /etc/apt/apt.conf.d/00-docker \
-    && echo 'APT::Install-Recommends "0";' >> /etc/apt/apt.conf.d/00-docker
-
 
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -15,19 +9,22 @@ RUN apt-get update && apt-get install -y \
     vim \
     python3 \
     python3-pip \
+    python3-venv \
     nodejs \
     npm \
     curl \
     ca-certificates \
     apt-transport-https \
+    iputils-ping \
     software-properties-common \
     && rm -rf /var/lib/apt/lists/*
 
-
 RUN npm install -g ganache-cli
 
+WORKDIR /app
 
-RUN pip3 install Flask web3 hexbytes py-solc-x
+RUN python3 -m venv /app/venv
 
+RUN /app/venv/bin/pip install Flask web3 hexbytes py-solc-x
 
-CMD ["bash"]
+CMD ["/bin/bash"]
